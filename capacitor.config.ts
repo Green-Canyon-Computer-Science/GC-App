@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'GC-App2',
   webDir: 'dist',
-  bundledWebRuntime: false
+  bundledWebRuntime: true
 };
 
 export default config;
