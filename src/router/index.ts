@@ -29,6 +29,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/poll',
     component: () => import ('../views/PollPage.vue')
+  },
+  {
+    path: '/schedule',
+    component: () => import ('../views/SchedulePage.vue')
+  },
+  {
+    path: '/notifs',
+    component: () => import ('../views/NotificationsPage.vue')
   }
   
 ]

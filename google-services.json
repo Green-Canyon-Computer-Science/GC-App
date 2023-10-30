@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "815683462941",
+    "project_id": "green-canyon-app",
+    "storage_bucket": "green-canyon-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815683462941:android:552aac31d8e7dbeb72a3f4",
+        "android_client_info": {
+          "package_name": "com.greencanyon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByVI7cMNu3dVkcPJKoncPJaqUfUiMkyUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

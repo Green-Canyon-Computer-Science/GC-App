@@ -2,6 +2,10 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+ion-card {
+  border-radius: 15px;
+}
+
 :root {
   /** primary **/
   --ion-color-primary: rgb(34, 93, 79);;
