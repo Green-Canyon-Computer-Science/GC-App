@@ -60,18 +60,25 @@ import {
 import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { FCM } from "@capacitor-community/fcm";
-     
+import { APIENDPOINT, getCookie, setCookie } from './constants';
+
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable('PushNotifications');
 
 async function notifs() {
+
   if (isPushNotificationsAvailable) {
     await PushNotifications.requestPermissions();
     await PushNotifications.register();
+    await PushNotifications.removeAllDeliveredNotifications()
   } 
 
-  FCM.subscribeTo({ topic: "all" })
-  .then((r) => console.log(`subscribed to all`))
-  .catch((err) => console.log(err));
+  console.log("Subscribed to all!");
+  if (getCookie("notifications-push") == null && isPushNotificationsAvailable) {
+    FCM.subscribeTo({ topic: "all" })
+    FCM.subscribeTo({ topic: "game" })
+    FCM.subscribeTo({ topic: "schedule" })
+    FCM.subscribeTo({ topic: "event" })
+  }
 }
 notifs();
 // END NOTIFICATIONS

@@ -74,6 +74,10 @@ import { APIENDPOINT, getCookie, setCookie } from '../constants';
 
 
 <script>
+import { Capacitor } from '@capacitor/core';
+import { FCM } from "@capacitor-community/fcm";
+     
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable('PushNotifications');
 export default {
 
   
@@ -103,10 +107,10 @@ export default {
       setCookie("notifications-event", false);
     }
 
-    this.pushValue = getCookie("notifications-push") == "true";
-    this.gameValue = getCookie("notifications-game") == "true";
-    this.scheduleValue = getCookie("notifications-schedule") == "true";
-    this.eventValue = getCookie("notifications-event") == "true";
+    this.pushValue = getCookie("notifications-push") == "false";
+    this.gameValue = getCookie("notifications-game") == "false";
+    this.scheduleValue = getCookie("notifications-schedule") == "false";
+    this.eventValue = getCookie("notifications-event") == "false";
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
@@ -133,12 +137,46 @@ export default {
         }
       }
       setCookie("notifications-push", this.pushValue);
+      
+      if (this.pushValue == true) {
+        console.log("Unsubbing from all topics");
+        if (isPushNotificationsAvailable) {
+          FCM.unsubscribeFrom({ topic: "all" });
+          FCM.unsubscribeFrom({ topic: "game" });
+          FCM.unsubscribeFrom({ topic: "schedule" });
+          FCM.unsubscribeFrom({ topic: "event" });
+        }
+
+      } else {
+        console.log("Subbing to all topics");
+        if (isPushNotificationsAvailable) {
+          FCM.subscribeTo({ topic: "all" });
+          FCM.subscribeTo({ topic: "game" });
+          FCM.subscribeTo({ topic: "schedule" });
+          FCM.subscribeTo({ topic: "event" });
+        }
+      }
     },
     handleGameChange() {
       if (this.pushValue == false) {
         this.pushValue = true;
         setCookie("notifications-push", true);
       }
+
+      // Sub to game
+      if (this.gameValue == true) {
+        console.log("Unsubbing from game");
+        if (isPushNotificationsAvailable) {
+          FCM.unsubscribeFrom({ topic: "game" });
+        }
+      } else {
+        console.log("Subbing to game");
+        if (isPushNotificationsAvailable) {
+          FCM.subscribeTo({ topic: "game" });
+        }
+      }
+      
+      // Cookie
       setCookie("notifications-game", this.gameValue);
     },
     handleScheduleChange() {
@@ -146,6 +184,20 @@ export default {
         this.pushValue = true;
         setCookie("notifications-push", true);
       }
+
+      // Sub to schedule
+      if (this.scheduleValue == true) {
+        console.log("Unsubbing from schedule");
+        if (isPushNotificationsAvailable) {
+          FCM.unsubscribeFrom({ topic: "schedule" });
+        }
+      } else {
+        console.log("Subbing to schedule");
+        if (isPushNotificationsAvailable) {
+          FCM.subscribeTo({ topic: "schedule" });
+        }
+      }
+
       setCookie("notifications-schedule", this.scheduleValue);
     },
     handleEventChange() {
@@ -153,6 +205,20 @@ export default {
         this.pushValue = true;
         setCookie("notifications-push", true);
       }
+
+      // Sub to Event
+      if (this.eventValue == true) {
+        console.log("Unsubbing from event");
+        if (isPushNotificationsAvailable) {
+          FCM.unsubscribeFrom({ topic: "event" });
+        }
+      } else {
+        console.log("Subbing to event");
+        if (isPushNotificationsAvailable) {
+          FCM.subscribeTo({ topic: "event" });
+        }
+      }
+
       setCookie("notifications-event", this.eventValue);
     }
   }
