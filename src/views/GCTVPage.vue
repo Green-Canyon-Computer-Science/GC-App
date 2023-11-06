@@ -27,7 +27,7 @@
           <div id="cards">
             <ion-list>
               <ion-item v-for="(item, index) in items" :key="index" class="video">
-                <iframe :width="windowWidth-20" :height="windowHeight" :src="videoUrl(item.id.videoId)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe :width="windowWidth-20" :height="windowHeight" :src="videoUrl(item)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </ion-item>
             </ion-list>
             <ion-infinite-scroll @ionInfinite="ionInfinite">
@@ -44,12 +44,13 @@
 
 <script setup>
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonButton, IonCardContent, IonCardSubtitle, IonInfiniteScrollContent, IonInfiniteScroll, IonItem, IonList} from '@ionic/vue';
-import { reactive } from 'vue';
-let resultNum = 5;
+import { ref } from 'vue';
+import { APIENDPOINT } from '../constants';
+let resultNum = 0;
 const getNewVideos = async () => {
   try {
-    const result =  await (await fetch("https://www.googleapis.com/youtube/v3/search?key=AIzaSyAy3canGYotL10o_c8EhlIwPjxDvliEhjw&channelId=UC31rtOI4SCddOKbNC6o3EYA&part=snippet,id&order=date&maxResults=" + resultNum, {method: "GET"})).json();
-    return result.items;
+    const result =  await (await fetch(APIENDPOINT + "/youtube?max=" + 5 + "&offset=" + resultNum, {method: "GET"})).json();
+    return result.data;
     } catch (e) {
       console.log(e);
     }
@@ -58,14 +59,15 @@ const getNewVideos = async () => {
 const videoUrl = (videoId) => {
   return `https://www.youtube.com/embed/${videoId}`;
 }
-const items = reactive([]);
+const items = ref([]);
 getNewVideos().then((result) => {
-  items.splice(0, items.length, ...result);
+  console.log(result + ', ' + items.value);
+  items.value = items.value.concat(result);
 });
 const ionInfinite = (ev) => {
   resultNum += 5;
   getNewVideos().then((result) => {
-    items.splice(0, items.length, ...result);
+    items.value = items.value.concat(result);
     setTimeout(() => ev.target.complete(), 500);
   });
 };

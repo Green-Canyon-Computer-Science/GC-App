@@ -108,9 +108,21 @@ export default {
     }
 
     this.pushValue = getCookie("notifications-push") == "false";
-    this.gameValue = getCookie("notifications-game") == "false";
-    this.scheduleValue = getCookie("notifications-schedule") == "false";
-    this.eventValue = getCookie("notifications-event") == "false";
+    if (getCookie("notifications-push") == "true") {
+      this.gameValue = getCookie("notifications-game") == "true";
+      this.scheduleValue = getCookie("notifications-schedule") == "true";
+      this.eventValue = getCookie("notifications-event") == "true";
+    } else {
+      this.gameValue = getCookie("notifications-game") == "false";
+      this.scheduleValue = getCookie("notifications-schedule") == "false";
+      this.eventValue = getCookie("notifications-event") == "false";
+    }
+    // if (getCookie("notifications-push") == "false") {
+
+    // } else {
+
+    // }
+
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
