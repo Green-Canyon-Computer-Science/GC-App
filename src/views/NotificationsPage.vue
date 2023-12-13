@@ -117,11 +117,6 @@ export default {
       this.scheduleValue = getCookie("notifications-schedule") == "false";
       this.eventValue = getCookie("notifications-event") == "false";
     }
-    // if (getCookie("notifications-push") == "false") {
-
-    // } else {
-
-    // }
 
   },
   beforeUnmount() {

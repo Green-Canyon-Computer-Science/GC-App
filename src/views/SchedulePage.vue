@@ -16,11 +16,15 @@
           </ion-toolbar>
         </ion-header>        
         
-
         <img :src=" APIENDPOINT + '/weekly'" style="width: 100% !important;">
-        <a :href=" APIENDPOINT + '/weekly'" style="color: white;">
-          Click here for full image
-        </a>
+
+        <div class="fullimage">
+          <a :href=" APIENDPOINT + '/weekly'" style="width: 100%; text-align: center; display: block;">
+            <strong>Click here for full image</strong>
+          </a>
+        </div>
+
+      
       </ion-content>
     </ion-page>
   </template>
@@ -74,6 +78,15 @@ export default {
   left: 0;
   right: 0;
   top: 65px;
+}
+
+.fullimage {
+  background-color: white; 
+  margin-left: 15px; 
+  margin-right: 15px; 
+  padding: 10px; 
+  border-radius: 15px; 
+  box-shadow: 0px 5px 11px -5px rgba(0,0,0,0.75);
 }
 
 .video {

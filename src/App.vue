@@ -2,7 +2,7 @@
   <ion-app>
     <ion-split-pane content-id="main-content">
       <ion-menu content-id="main-content" type="overlay">
-        <ion-content>
+        <ion-content style="height: 100%;">
           <ion-list id="inbox-list" style="border-radius: 15px;">
             <!-- <ion-list-header>Green Canyon</ion-list-header> -->
             <!-- <ion-note>Testing</ion-note> -->
@@ -169,16 +169,17 @@ ion-menu.md ion-content {
 
 .bottom-links {
   position: absolute;
-  bottom: 0;
+  top: calc(max(100vh - 50px, 600px));
   margin: 0;
+  left: 5%;
   padding: 0;
   height: 50px;
-  width: calc(304px - 16px);
+  width: 90%;
   border-bottom: 2px solid white;        
 }
 @media (max-width: 340px) {
   .bottom-links {
-    width: calc(264px - 16px);
+    width: calc(264px - 28px);
   }  
 }
 

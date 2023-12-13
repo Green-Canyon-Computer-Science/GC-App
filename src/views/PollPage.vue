@@ -29,7 +29,7 @@
               </ion-card-header>
 
               <ion-card-content>
-                <div v-if="index.type == 'checkbox'" class="questioninput typecheckbox">
+                <div v-if="index.type == 'checkbox'" class="questioninput typecheckbox ">
                   <div v-for="choice in index.choices" :key="choice">
                     <ion-item>
                       <ion-label  style="position: relative; left: 5px;" class="label">{{choice}}</ion-label>
@@ -39,15 +39,30 @@
                 </div>
 
                 <div v-if="index.type == 'radio'" class="questioninput typeradio">
-                  <ion-radio-group value>
+                  <ion-radio-group class="response">
                     <div v-for="choice in index.choices" :key="choice">
                       <ion-item>
-                        <ion-radio slot="end" :value="choice" class="radio response"></ion-radio>
+                        <ion-radio slot="end" :value="choice" class="radio"></ion-radio>
                         <ion-label class="label">{{choice}}</ion-label>
 
                       </ion-item>
                     </div>
                   </ion-radio-group>
+                </div>
+
+                <div v-if="index.type == 'short'" class="questioninput typeshort">
+                  <ion-item>
+                    <ion-input class="input response" :placeholder="index.placeholder" maxlength="80"> </ion-input>
+                  </ion-item>
+                </div>
+
+                <div v-if="index.type == 'long'" class="questioninput typelong">
+                  <ion-item>
+                    <ion-textarea
+                      :auto-grow="true"
+                      class="input response" :placeholder="index.placeholder" maxlength="300">
+                    </ion-textarea>
+                  </ion-item>
                 </div>
               </ion-card-content>
             </ion-card>
@@ -108,7 +123,7 @@ getIndexedPoll().then((result) => {
   <script>
 import ArticleComp from '../components/ArticleComponent.vue';
 
-import { toastController, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonButton, IonLabel, IonCheckbox, IonItem, IonRadio, IonRadioGroup, IonCardContent} from '@ionic/vue';
+import { toastController, IonButtons, IonContent, IonHeader, IonMenuButton, IonInput, IonTextarea, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonButton, IonLabel, IonCheckbox, IonItem, IonRadio, IonRadioGroup, IonCardContent} from '@ionic/vue';
 import { reactive } from 'vue';
 
 export default {
@@ -134,6 +149,8 @@ export default {
       // Loop over each questions
       questions.forEach(element => {
 
+        console.log(element.classList);
+
         const choices = [];
 
         const options = element.querySelectorAll(".label") // Gets all options
@@ -143,9 +160,14 @@ export default {
         // const 
 
         // Loop over responses
-        for (let i = 0; i < options.length; i ++) {
-          if (responses[i].checked) {
+        for (let i = 0; i < responses.length; i ++) {
+
+          if (responses[i].checked && responses[i].tagName.toLowerCase() == 'ion-checkbox') {
             choices.push(options[i].innerHTML);
+            continue;
+          }
+          if (responses[i].value && responses[i].tagName.toLowerCase() != 'ion-checkbox') {
+            choices.push(responses[i].value);
           }
         }
         if (choices.length == 0 && required.length > 0) {
